@@ -5,10 +5,6 @@
 
 A C function that reads files line by line from a file descriptor. This is a school project from 42 that implements a memory-efficient solution for sequential file reading.
 
-## Overview
-
-`get_next_line()` is a function that returns successive lines from an open file. Each call returns the next complete line, including the newline character (`\n`), until the entire file has been read.
-
 ## Features
 
 - Read files line by line from a file descriptor
@@ -52,37 +48,11 @@ int main(void)
 {
     int fd = open("file.txt", O_RDONLY);
     char *line;
-    
+
     while ((line = get_next_line(fd)) != NULL)
     {
         printf("%s", line);
         free(line);  // Must free each line
-    }
-    close(fd);
-    return (0);
-}
-```
-
-## Example Program
-
-```c
-#include "get_next_line.h"
-#include <fcntl.h>
-
-int main(int ac, char **av)
-{
-    int     fd;
-    char    *line;
-
-    if (ac != 2)
-        return (1);
-    fd = open(av[1], O_RDONLY);
-    if (fd < 0)
-        return (1);
-    while ((line = get_next_line(fd)))
-    {
-        printf("%s", line);
-        free(line);
     }
     close(fd);
     return (0);
