@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hmimouni <hmimouni@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hmimouni <hmimouni@>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 23:52:35 by hmimouni          #+#    #+#             */
-/*   Updated: 2024/12/22 05:33:17 by hmimouni         ###   ########.fr       */
+/*   Updated: 2026/04/06 17:43:50 by hmimouni         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,22 +119,27 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
+int	main(int ac, char **av)
+{
+	int		fd;
+	char	*line;
 
-// 	fd = open("test.txt", O_RDONLY);
-// 	if (fd == -1)
-// 	{
-// 		printf("Erreur");
-// 		return (0);
-// 	}
-// 	while ((line = get_next_line(fd)) != NULL)
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	if (ac != 2)
+	{
+		printf("Usage: %s <filename>\n", av[0]);
+		return (1);
+	}
+	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+	{
+		perror("open");
+		return (1);
+	}
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
+}

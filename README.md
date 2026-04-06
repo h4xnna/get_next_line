@@ -3,41 +3,61 @@
 [![Language](https://img.shields.io/badge/Language-C-blue.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
 
-`get_next_line` est un projet 42 en C qui lit un fichier ligne par ligne à partir d'un descripteur de fichier.
-Chaque appel retourne la ligne suivante, avec le caractère de saut de ligne (`\n`) s'il est présent.
+## 🌟 Overview
 
-## ✅ Objectif
+`get_next_line` is a 42 project written in C that reads a file line by line using a file descriptor.
+Each call to the function returns the next line, including the newline character (`\n`) if it is present.
 
-- Lire un flux entier ligne par ligne
-- Gérer plusieurs descripteurs de fichiers simultanément
-- Utiliser une mémoire dynamique efficace
-- Respecter les restrictions du projet 42 sans utiliser de bibliothèques externes inutiles
+This project focuses on:
+- dynamic memory management,
+- buffered reading with `read()`,
+- support for multiple file descriptors,
+- simple and reusable code.
 
-## 📁 Fichiers
+## 📁 Repository Structure
 
-- `get_next_line.h` — prototype de fonctions et constantes
-- `get_next_line.c` — implémentation principale
-- `get_next_line_utils.c` — utilitaires de gestion de chaînes
+- `get_next_line.h` — function prototypes, macros, and includes
+- `get_next_line.c` — main implementation of `get_next_line` (includes a demo `main` for testing)
+- `get_next_line_utils.c` — helper functions for string handling
+- `Makefile` — build automation script
+- `README.md` — project documentation
 
 ## 🛠 Compilation
 
-### Avec `main.c` et taille de buffer par défaut (42) :
+### Using Makefile (recommended)
+
+```bash
+make        # Compile the project
+make clean  # Remove object files
+make fclean # Remove object files and executable
+make re     # Rebuild from scratch
+```
+
+### Manual compilation
 
 ```bash
 gcc -Wall -Wextra -Werror -c get_next_line.c
-cc -Wall -Wextra -Werror -c get_next_line_utils.c
-cc -Wall -Wextra -Werror main.c get_next_line.o get_next_line_utils.o -o gnl
+gcc -Wall -Wextra -Werror -c get_next_line_utils.c
+gcc -Wall -Wextra -Werror get_next_line.o get_next_line_utils.o -o gnl
 ```
 
-### Avec une taille de buffer personnalisée :
+### Compilation with custom `BUFFER_SIZE`
 
 ```bash
-gcc -Wall -Wextra -Werror -D BUFFER_SIZE=4096 get_next_line.c get_next_line_utils.c main.c -o gnl
+gcc -Wall -Wextra -Werror -D BUFFER_SIZE=4096 get_next_line.c get_next_line_utils.c -o gnl
 ```
 
-> `BUFFER_SIZE` définit le nombre de bytes lus à chaque appel `read()`.
+> `BUFFER_SIZE` determines how many bytes are read at each `read()` call.
 
-## ▶️ Exemple d'utilisation
+## ▶️ Usage
+
+```bash
+./gnl my_file.txt
+```
+
+> Note: A simple `main` wrapper is included in `get_next_line.c` for convenience and easy testing, even though the original 42 subject does not explicitly require it.
+
+### Example code
 
 ```c
 #include "get_next_line.h"
@@ -64,36 +84,48 @@ int main(int ac, char **av)
 }
 ```
 
-## 🔧 Fonction principale
+## 🔍 How it works
 
-### `char *get_next_line(int fd)`
+The `get_next_line` function works in three main steps:
 
-Lit la ligne suivante du descripteur de fichier `fd` et retourne un buffer alloué dynamiquement.
+1. Read from the file descriptor until a newline or EOF is reached.
+2. Extract the next full line to return.
+3. Keep the remaining data in a static buffer for the next call.
 
-**Paramètre**
-- `fd` : descripteur de fichier ouvert
+### Main helper functions
 
-**Retour**
-- Ligne lue, y compris le caractère `\n` si présent
-- `NULL` si la fin de fichier est atteinte ou en cas d'erreur
+- `read_line()` — reads from `fd` into a temporary buffer and appends the data.
+- `extract_line()` — returns the full next line, including `\n` if present.
+- `clear_stock()` — updates the internal buffer after extracting the returned line.
 
-**Important**
-- La ligne renvoyée doit être libérée avec `free()` après utilisation.
+## 🧩 Utility functions
 
-## 🧩 Fonctions utilitaires
+- `ft_strlen()` — calculates the length of a string.
+- `ft_strchr()` — checks if a character exists in a string.
+- `ft_strjoin()` — joins two strings and frees the first one.
 
-- `ft_strlen()` — calcul de la longueur d'une chaîne
-- `ft_strchr()` — recherche d'un caractère dans une chaîne
-- `ft_strjoin()` — concaténation de deux chaînes
+## ✅ Best practices
 
-## ⚠️ Notes importantes
+- Always free the string returned by `get_next_line()`.
+- Test with empty files, files without a final `\n`, and large files.
+- Verify behavior with multiple file descriptors open at the same time.
 
-- Libérer chaque ligne retournée pour éviter les fuites mémoire
-- Le projet supporte plusieurs `fd` en même temps
-- Le code fonctionne avec des fichiers de toutes tailles
-- Le `BUFFER_SIZE` peut être adapté pour optimiser les performances
+## 💡 Suggestions to improve this repo
 
-## 📌 Licence
+- Add automated tests or validation scripts.
+- Add a `.gitignore` to exclude object files and executables.
+- Add a `LICENSE` file if you want to publish the project.
+- Add sample outputs or usage examples in the README.
 
-MIT
+## 🧪 Testing ideas
+
+- empty file
+- single line without a trailing `\n`
+- file with multiple lines
+- file with very long lines
+- alternating reads from multiple file descriptors
+
+## 📌 License
+
+This project is licensed under MIT.
 
