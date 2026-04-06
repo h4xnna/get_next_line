@@ -57,32 +57,6 @@ gcc -Wall -Wextra -Werror -D BUFFER_SIZE=4096 get_next_line.c get_next_line_util
 
 > Note: A simple `main` wrapper is included in `get_next_line.c` for convenience and easy testing, even though the original 42 subject does not explicitly require it.
 
-### Example code
-
-```c
-#include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
-
-int main(int ac, char **av)
-{
-    int     fd;
-    char    *line;
-
-    if (ac != 2)
-        return (1);
-    fd = open(av[1], O_RDONLY);
-    if (fd < 0)
-        return (1);
-    while ((line = get_next_line(fd)))
-    {
-        printf("%s", line);
-        free(line);
-    }
-    close(fd);
-    return (0);
-}
-```
 
 ## 🔍 How it works
 
@@ -110,20 +84,7 @@ The `get_next_line` function works in three main steps:
 - Test with empty files, files without a final `\n`, and large files.
 - Verify behavior with multiple file descriptors open at the same time.
 
-## 💡 Suggestions to improve this repo
 
-- Add automated tests or validation scripts.
-- Add a `.gitignore` to exclude object files and executables.
-- Add a `LICENSE` file if you want to publish the project.
-- Add sample outputs or usage examples in the README.
-
-## 🧪 Testing ideas
-
-- empty file
-- single line without a trailing `\n`
-- file with multiple lines
-- file with very long lines
-- alternating reads from multiple file descriptors
 
 ## 📌 License
 
