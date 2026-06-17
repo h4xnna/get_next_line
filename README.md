@@ -1,4 +1,5 @@
 <img width="689" height="300" alt="Screenshot_20260617_164207" src="https://github.com/user-attachments/assets/6d040eb7-d10a-418d-931b-b75490bd7980" />
+
 # Get Next Line (GNL)
 
 [![Language](https://img.shields.io/badge/Language-C-blue.svg)](#)
